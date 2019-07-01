@@ -28,12 +28,22 @@ app.post('/api/exercise/new-user', (req, res, next) => {
   const { username } = req.body;
   if (!username) res.status(400).send({ error: 'BAD_REQUEST' });
   const user = new User({ username });
-  res.json(user);
+  user.save((err, data) => {
+    if (err) res.status(500).send({ error: err });
+    res.json({ username, _id: user.id });  
+  });
 })
 
 app.get('/api/exercise/users', (req, res, next) => {
-  User.find({}, function);
-  res.json(users);
+  User.find({}, function(err, data) {
+    if (err) res.status(500).send({ error: err });
+    const users = data.map((user) => (){
+      delete user._v;
+      delete user.exercise;
+      return 
+    })
+    res.json(users);
+  });
 })
 
 // Not found middleware
