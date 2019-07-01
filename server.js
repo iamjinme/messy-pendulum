@@ -37,12 +37,17 @@ app.post('/api/exercise/new-user', (req, res, next) => {
 app.get('/api/exercise/users', (req, res, next) => {
   User.find({}, function(err, data) {
     if (err) res.status(500).send({ error: err });
-    const users = data.map((user) => (){
-      delete user._v;
-      delete user.exercise;
-      return 
-    })
+    const users = data.map((user) => ({ _id: user.id, username: user.username }));
     res.json(users);
+  });
+})
+
+app.post('/api/exercise/add', (req, res, next) => {
+  const { userId, description, duration, date } = req.body;
+  if (!userId || !description || !duration) res.status(400).send({ error: 'BAD_REQUEST' });
+  User.findById(userId, (err, data) => {
+    if (err) res.status(500).send({ error: err });
+    res.json(data);  
   });
 })
 
