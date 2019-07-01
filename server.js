@@ -20,6 +20,15 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+app.get('/api', (req, res, next) => {
+  res.send({ ok: true });
+})
+
+app.post('/api/exercise/new-user', (req, res, next) => {
+  const { username } = req.body;
+  if (!username)
+  res.send({ username });
+})
 
 // Not found middleware
 app.use((req, res, next) => {
@@ -44,8 +53,6 @@ app.use((err, req, res, next) => {
   res.status(errCode).type('txt')
     .send(errMessage)
 })
-
-
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
