@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
 
-const exerciseSchema = Schema({
+const exerciseSchema = mongoose.Schema({
   description: {
     type: String,
     required: true,
@@ -9,7 +9,7 @@ const exerciseSchema = Schema({
   date: String,
 });
 
-const userSchema = Schema({
+const userSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -17,6 +17,6 @@ const userSchema = Schema({
   exercise: [exerciseSchema],
 });
 
-const User = model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
