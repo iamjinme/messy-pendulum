@@ -26,8 +26,14 @@ app.get('/api', (req, res, next) => {
 
 app.post('/api/exercise/new-user', (req, res, next) => {
   const { username } = req.body;
-  if (!username)
-  res.send({ username });
+  if (!username) res.status(400).send({ error: 'BAD_REQUEST' });
+  const user = new User({ username });
+  res.json(user);
+})
+
+app.get('/api/exercise/users', (req, res, next) => {
+  User.find({}, function);
+  res.json(users);
 })
 
 // Not found middleware
