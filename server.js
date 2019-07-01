@@ -47,7 +47,11 @@ app.post('/api/exercise/add', (req, res, next) => {
   if (!userId || !description || !duration) res.status(400).send({ error: 'BAD_REQUEST' });
   User.findById(userId, (err, data) => {
     if (err) res.status(500).send({ error: err });
-    res.json(data);  
+    if (!data) res.status(404).send({ error: 'NOT_FOUND' });
+    data.exercise.push({
+      des
+    })
+    res.json({ ok: true });
   });
 })
 
