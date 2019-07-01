@@ -48,10 +48,16 @@ app.post('/api/exercise/add', (req, res, next) => {
   User.findById(userId, (err, data) => {
     if (err) res.status(500).send({ error: err });
     if (!data) res.status(404).send({ error: 'NOT_FOUND' });
-    data.exercise.push({
-      des
-    })
-    res.json({ ok: true });
+    const add = {
+      description,
+      duration,
+      date,
+    };
+    data.exercise = [...data.exercise, add];
+    data.save((err, data) => {
+      if (err) res.status(500).send({ error: err });
+      res.json(data);
+    });
   });
 })
 
