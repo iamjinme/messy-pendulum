@@ -45,6 +45,7 @@ app.get('/api/exercise/users', (req, res, next) => {
 app.post('/api/exercise/add', (req, res, next) => {
   const { userId, description, duration, date } = req.body;
   if (!userId || !description || !duration) res.status(400).send({ error: 'BAD_REQUEST' });
+  // ToDo: create date if empty
   User.findById(userId, (err, data) => {
     if (err) res.status(500).send({ error: err });
     if (!data) res.status(404).send({ error: 'NOT_FOUND' });
