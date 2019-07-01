@@ -7,6 +7,8 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 
+var Person = require('./myApp.js').PersonModel;
+
 app.use(cors())
 
 app.use(bodyParser.urlencoded({extended: false}))
