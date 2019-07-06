@@ -69,14 +69,17 @@ app.post('/api/exercise/add', (req, res, next) => {
 
 // GET /api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', (req, res, next) => {
-  const { userId, from, to, limit } = req.params;
-  console.log(req.param.userId);
+  const userId = req.param('userId');
+  const from = req.param('from');
+  const to = req.param('to');
+  const limit = req.param('limit');
   if (!userId) res.status(400).send({ error: 'BAD_REQUEST' });
   User.findById(userId, (err, data) => {
     if (err) res.status(500).send({ error: err });
     let logs = data.exercise;
-    if (from && to) logs = logs.filter(exercise => from <= exercise.date >= to);
-    const users = data.map((user) => ({ _id: user.id, username: user.username }));
+    if (from && to) logs = logs.filter(exercise => exercise.date >= from && exercise.date <= to);
+    if (limit) logs = logs.splice(limit);
+    //const users = data.map((user) => ({ _id: user.id, username: user.username }));
     // splice()
     res.json(logs);
   });
