@@ -8,8 +8,12 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 
 const User = require('./User.js');
-const today
-
+const today = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+}
 
 app.use(cors())
 
@@ -47,20 +51,30 @@ app.get('/api/exercise/users', (req, res, next) => {
 app.post('/api/exercise/add', (req, res, next) => {
   const { userId, description, duration, date } = req.body;
   if (!userId || !description || !duration) res.status(400).send({ error: 'BAD_REQUEST' });
-  // ToDo: create date if empty
   User.findById(userId, (err, data) => {
     if (err) res.status(500).send({ error: err });
     if (!data) res.status(404).send({ error: 'NOT_FOUND' });
     const add = {
       description,
       duration,
-      date,
+      date: (!date ? today() : date),
     };
     data.exercise = [...data.exercise, add];
     data.save((err, data) => {
       if (err) res.status(500).send({ error: err });
       res.json(data);
     });
+  });
+})
+
+// GET /api/exercise/log?{userId}[&from][&to][&limit]
+app.get('/api/exercise/log', (req, res, next) => {
+  const {user}
+  req.param
+  User.find({}, function(err, data) {
+    if (err) res.status(500).send({ error: err });
+    const users = data.map((user) => ({ _id: user.id, username: user.username }));
+    res.json(users);
   });
 })
 
