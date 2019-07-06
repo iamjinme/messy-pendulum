@@ -69,10 +69,11 @@ app.post('/api/exercise/add', (req, res, next) => {
 
 // GET /api/exercise/log?{userId}[&from][&to][&limit]
 app.get('/api/exercise/log', (req, res, next) => {
-  const {user}
-  req.param
-  User.find({}, function(err, data) {
+  const { userId, from, to, limit } = req.param;
+  if (!userId) res.status(400).send({ error: 'BAD_REQUEST' });
+  User.findById(userId, (err, data) => {
     if (err) res.status(500).send({ error: err });
+    let logs
     const users = data.map((user) => ({ _id: user.id, username: user.username }));
     res.json(users);
   });
