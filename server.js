@@ -8,6 +8,8 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 
 const User = require('./User.js');
+const today
+
 
 app.use(cors())
 
